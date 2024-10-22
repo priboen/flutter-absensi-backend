@@ -10,7 +10,7 @@
             <li class="nav-item  ">
                 <a href="{{ route('home') }}" class="nav-link "><i class="fa-solid fa-house"></i><span>Beranda</span></a>
             </li>
-            <li class="menu-header">GENERAL</li>
+            {{-- <li class="menu-header">GENERAL</li>
             <li class="nav-item ">
                 <a href="{{ route('users.index') }}" class="nav-link "><i class="fa-solid fa-user-large"></i>
                     <span>Pengguna</span></a>
@@ -57,7 +57,7 @@
             <li class="nav-item ">
                 <a href="" class="nav-link "><i class="fa-solid fa-location-dot"></i>
                     <span>Area Absensi</span></a>
-            </li>
+            </li> --}}
 
             {{-- <li class="nav-item">
                 <a href="{{ route('companies.show', 1) }}" class="nav-link">

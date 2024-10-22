@@ -26,7 +26,6 @@
                         </div>
                     @enderror
                 </div>
-
                 <div class="form-group">
                     <div class="d-block">
                         <label for="password" class="control-label">Password</label>
@@ -36,7 +35,6 @@
                         please fill in your password
                     </div>
                 </div>
-
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
                         Login
