@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('phone')->nullable();
             $table->enum('role', ['admin', 'staff', 'dosen', 'mahasiswa'])->default('mahasiswa');
-            $table->integer('unique_number')->unique();
+            $table->string('unique_number')->unique();
             $table->string('department')->nullable();
             $table->text('face_embedding')->nullable();
             $table->string('image_url')->nullable();
