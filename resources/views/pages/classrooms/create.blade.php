@@ -26,7 +26,7 @@
             <div class="section-body">
                 <h2 class="section-title">Ruang Kelas</h2>
                 <div class="card">
-                    <form action="{{ route('class.store') }}" method="POST">
+                    <form action="{{ route('classrooms.store') }}" method="POST">
                         @csrf
                         <div class="card-header">
                             <h4>Masukan Data Ruang Kelas</h4>
