@@ -12,4 +12,9 @@ class Course extends Model
         'time_in',
         'credits',
     ];
+
+    public function class()
+    {
+        return $this->hasOne(Classes::class, 'course_id', 'id');
+    }
 }
