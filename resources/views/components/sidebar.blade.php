@@ -10,16 +10,30 @@
             <li class="nav-item  ">
                 <a href="{{ route('home') }}" class="nav-link "><i class="fa-solid fa-house"></i><span>Beranda</span></a>
             </li>
-            {{-- <li class="menu-header">GENERAL</li>
+            <li class="menu-header">GENERAL</li>
             <li class="nav-item ">
-                <a href="{{ route('users.index') }}" class="nav-link "><i class="fa-solid fa-user-large"></i>
+                <a href="{{ route('users.index') }}" class="nav-link "><i class="fa-solid fa-users"></i>
                     <span>Pengguna</span></a>
             </li>
+            <li class="menu-header">KURIKULUM</li>
             <li class="nav-item ">
-                <a href="{{ route('student.index') }}" class="nav-link "><i class="fa-solid fa-graduation-cap"></i>
-                    <span>Mahasiswa</span></a>
+                <a href="{{ route('classes.index') }}" class="nav-link "><i class="fa-solid fa-book-open-reader"></i>
+                    <span>Rencana Studi Mahasiswa</span></a>
             </li>
             <li class="nav-item ">
+                <a href="{{ route('courses.index') }}" class="nav-link "><i class="fa-solid fa-book"></i>
+                    <span>Mata Kuliah</span></a>
+            </li>
+            <li class="nav-item ">
+                <a href="{{ route('classrooms.index') }}" class="nav-link "><i class="fa-solid fa-building"></i>
+                    <span>Ruang Kelas</span></a>
+            </li>
+            <li class="menu-header">PRESENSI</li>
+            <li class="nav-item ">
+                <a href="{{ route('attendances.index') }}" class="nav-link "><i class="fa-solid fa-clipboard-user"></i>
+                    <span>Presensi Kuliah</span></a>
+            </li>
+            {{--             <li class="nav-item ">
                 <a href="{{ route('study-enroll.index') }}" class="nav-link "><i
                         class="fa-duotone fa-solid fa-book-open-reader"></i>
                     <span>Rencana Studi Mahasiswa</span></a>
