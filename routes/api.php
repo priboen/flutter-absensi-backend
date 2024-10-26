@@ -17,4 +17,6 @@ Route::post('/logout', [App\Http\Controllers\Api\AuthController::class, 'logout'
 
 Route::get('/courses', [ClassesController::class, 'getCoursesByStudent'])->middleware('auth:sanctum');
 
-Route::post('/courses/checkin', [AttendanceController::class, 'checkin'])->middleware('auth:sanctum');
+Route::post('/checkin', [AttendanceController::class, 'checkin'])->middleware('auth:sanctum');
+Route::get('/is-checkin', [AttendanceController::class, 'isCheckedin'])->middleware('auth:sanctum');
+Route::post('/checkout', [AttendanceController::class, 'checkout'])->middleware('auth:sanctum');

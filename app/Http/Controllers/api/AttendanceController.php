@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Facades\Validator;
 
 class AttendanceController extends Controller
@@ -47,18 +48,40 @@ class AttendanceController extends Controller
         ], 200);
     }
 
-    public function isCheckin(Request $request)
+    // Checkout
+    public function checkout(Request $request)
     {
+        $request->validate([
+            'class_id' => 'required|exists:classes,id',
+            'latitude' => 'required|numeric',
+            'longitude' => 'required|numeric',
+        ]);
+
         $attendance = Attendance::where('class_id', $request->class_id)
-            ->where('user_id', Auth::user()->id)
-            ->whereDate('date', date('Y-m-d'))
+            ->where('date', date('Y-m-d'))
             ->first();
 
-        $isCheckout = $attendance ? $attendance->time_out : false;
+        if (!$attendance) {
+            return response([
+                'message' => 'Kamu belum melakukan presensi!',
+            ], 400);
+        }
+
+        $attendance->time_out = now()->toTimeString();
+        $attendance->latlong_out = $request->latitude . ',' . $request->longitude;
+        $attendance->save();
 
         return response([
-            'checkedin' => $attendance ? true : false,
-            'checkedout' => $isCheckout ? true : false,
+            'message' => 'Terima kasih sudah berkuliah hari ini!',
+            'attendance' => $attendance
+        ], 200);
+    }
+
+    public function isCheckedin(Request $request)
+    {
+        $attendance = Attendance::where('class_id', $request->class_id)->where('date', date('Y-m-d'))->first();
+        return response([
+            'attendances' => $attendance ? true : false,
         ], 200);
     }
 }
