@@ -31,8 +31,6 @@
                 <p class="section-lead">
                     You can manage all Attendances, such as editing, deleting and more.
                 </p>
-
-
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
@@ -40,7 +38,6 @@
                                 <h4>All Posts</h4>
                             </div>
                             <div class="card-body">
-
                                 <div class="float-right">
                                     <form method="GET" action="{{ route('attendances.index') }}">
                                         <div class="input-group">
@@ -52,21 +49,17 @@
                                         </div>
                                     </form>
                                 </div>
-
                                 <div class="clearfix mb-3"></div>
-
                                 <div class="table-responsive">
                                     <table class="table-striped table">
                                         <tr>
-
                                             <th>Tgl</th>
                                             <th>Mata Kuliah</th>
                                             <th>Mahasiswa</th>
                                             <th>Masuk</th>
                                             <th>Keluar</th>
-                                            <th>Latlong Masuk</th>
-                                            <th>Latlong Keluar</th>
-
+                                            {{-- <th>Latlong Masuk</th>
+                                            <th>Latlong Keluar</th> --}}
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($attendances as $attendance)
@@ -78,24 +71,22 @@
                                                 </td>
                                                 <td>{{ $attendance->class->user->name }}
                                                 </td>
-                                                <td>{{ date('H:i', strtotime($attendance->time_in)) }}</td>
-                                                <td>{{ date('H:i', strtotime($attendance->time_out)) }}</td>
-                                                <td>
-                                                    {{ $attendance->latlon_in }}
+                                                <td>{{ $attendance->time_in }}</td>
+                                                <td>{{ $attendance->time_out }}</td>
+                                                {{-- <td>
+                                                    {{ $attendance->latlong_in }}
                                                 </td>
                                                 <td>
-                                                    {{ $attendance->latlon_out }}
-                                                </td>
-
+                                                    {{ $attendance->latlong_out }}
+                                                </td> --}}
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <a href='{{ route('attendances.edit', $attendance->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
-                                                            Edit
+                                                            Detail
                                                         </a>
-
-                                                        <form action="{{ route('attendances.destroy', $attendance->id) }}"
+                                                        {{-- <form action="{{ route('attendances.destroy', $attendance->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
@@ -103,13 +94,11 @@
                                                             <button class="btn btn-sm btn-danger btn-icon confirm-delete">
                                                                 <i class="fas fa-times"></i> Delete
                                                             </button>
-                                                        </form>
+                                                        </form> --}}
                                                     </div>
                                                 </td>
                                             </tr>
                                         @endforeach
-
-
                                     </table>
                                 </div>
                                 <div class="float-right">
