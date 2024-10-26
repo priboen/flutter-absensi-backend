@@ -33,6 +33,10 @@
                 <a href="{{ route('attendances.index') }}" class="nav-link "><i class="fa-solid fa-clipboard-user"></i>
                     <span>Presensi Kuliah</span></a>
             </li>
+            <li class="nav-item ">
+                <a href="{{ route('permissions.index') }}" class="nav-link "><i class="fa-solid fa-clipboard-user"></i>
+                    <span>Perizinan Kuliah</span></a>
+            </li>
             {{--             <li class="nav-item ">
                 <a href="{{ route('study-enroll.index') }}" class="nav-link "><i
                         class="fa-duotone fa-solid fa-book-open-reader"></i>

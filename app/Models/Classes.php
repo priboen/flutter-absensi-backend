@@ -26,4 +26,9 @@ class Classes extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class);
+    }
 }
