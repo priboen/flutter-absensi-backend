@@ -12,4 +12,9 @@ class Classroom extends Model
         'latitude',
         'longitude'
     ];
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class);
+    }
 }
