@@ -26,7 +26,7 @@
             <div class="section-body">
                 <h2 class="section-title">Rencana Studi</h2>
                 <div class="card">
-                    <form action="{{ route('rencana-studi.store') }}" method="POST">
+                    <form action="{{ route('classes.store') }}" method="POST">
                         @csrf
                         <div class="card-header">
                             <h4>Masukan Data Rencana Studi</h4>
