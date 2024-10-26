@@ -33,61 +33,83 @@
                             <h4>Ubah Data</h4>
                         </div>
                         <div class="card-body">
-                            <div class="form-group">
-                                <label>Kode Mata Kuliah</label>
-                                <input type="text"
-                                    class="form-control @error('courses_code')
+                            <div class="row">
+                                <div class="form-group col-md-6 col-12">
+                                    <label>Kode Mata Kuliah</label>
+                                    <input type="text"
+                                        class="form-control @error('courses_code')
+                                    is-invalid
+                                @enderror"
+                                        name="courses_code" value="{{ $course->courses_code }}">
+                                    @error('courses_code')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6 col-12">
+                                    <label>Nama Mata Kuliah</label>
+                                    <input type="text"
+                                        class="form-control @error('name')
+                                    is-invalid
+                                @enderror"
+                                        name="name" value="{{ $course->name }}">
+                                    @error('name')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6 col-12">
+                                    <label>Waktu Mulai</label>
+                                    <input type="text"
+                                        class="form-control timepicker @error('time_in')
                                 is-invalid
                             @enderror"
-                                    name="courses_code" value="{{ $course->courses_code }}">
-                                @error('courses_code')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                        name="time_in" value="{{ $course->time_in }}">
+                                    @error('time_in')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-6 col-12">
+                                    <label>Kredit Semester</label>
+                                    <input type="text"
+                                        class="form-control @error('credits')
+                                    is-invalid
+                                @enderror"
+                                        name="credits" value="{{ $course->credits }}">
+                                    @error('credits')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="form-group">
-                                <label>Nama Mata Kuliah</label>
-                                <input type="text"
-                                    class="form-control @error('name')
-                                is-invalid
-                            @enderror"
-                                    name="name" value="{{ $course->name }}">
-                                @error('name')
+                                <label>Ruang Kelas</label>
+                                <select name="classroom_id"
+                                    class="form-control @error('classroom_id') is-invalid @enderror">
+                                    <option value="">-- Pilih Ruang Kelas --</option>
+                                    @foreach ($classrooms as $classroom)
+                                        <option
+                                            value="{{ $classroom->id }}"{{ $course->classroom_id == $classroom->id ? 'selected' : '' }}>
+                                            {{ $classroom->name }} -
+                                            {{ $classroom->building_name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('classroom_id')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-                            <div class="form-group">
-                                <label>Waktu Mulai</label>
-                                <input type="text"
-                                    class="form-control timepicker @error('time_in')
-                            is-invalid
-                        @enderror"
-                                    name="time_in" value="{{ $course->time_in }}">
-                                @error('time_in')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                            <div class="card-footer text-right">
+                                <button class="btn btn-primary">Submit</button>
                             </div>
-                            <div class="form-group">
-                                <label>Kredit Semester</label>
-                                <input type="text"
-                                    class="form-control @error('credits')
-                                is-invalid
-                            @enderror"
-                                    name="credits" value="{{ $course->credits }}">
-                                @error('credits')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="card-footer text-right">
-                            <button class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>

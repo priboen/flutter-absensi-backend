@@ -55,7 +55,8 @@
                                             <th>Kode Mata Kuliah</th>
                                             <th>Nama Mata Kuliah</th>
                                             <th>Jam Mulai</th>
-                                            <th>Satuan Kredit Semester</th>
+                                            <th>Kredit Semester</th>
+                                            <th>Ruang Kelas</th>
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($course as $mk)
@@ -64,6 +65,7 @@
                                                 <td>{{ $mk->name }}</td>
                                                 <td>{{ date('H:i', strtotime($mk->time_in)) }}</td>
                                                 <td>{{ $mk->credits }}</td>
+                                                <td>{{ $mk->classroom->name }} - {{ $mk->classroom->building_name }}</td>
                                                 <td>
                                                     <div class="d-flex justify-content-center">
                                                         <a href='{{ route('courses.edit', $mk->id) }}'

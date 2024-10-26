@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classroom;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -16,15 +17,18 @@ class CourseController extends Controller
     }
     public function create()
     {
-        return view('pages.courses.create');
+        $classrooms = Classroom::all();
+        return view('pages.courses.create', compact('classrooms'));
     }
     public function store(Request $request)
     {
         $request->validate([
+            'classroom_id' => 'required|exists:classrooms,id',
             'courses_code' => 'required|unique:courses,courses_code',
             'name' => 'required',
         ]);
         Course::create([
+            'classroom_id' => $request->classroom_id,
             'courses_code' => $request->courses_code,
             'name' => $request->name,
             'semester' => $request->semester,
@@ -35,15 +39,18 @@ class CourseController extends Controller
     }
     public function edit(Course $course)
     {
-        return view('pages.courses.edit', compact('course'));
+        $classrooms = Classroom::all();
+        return view('pages.courses.edit', compact(['course', 'classrooms']));
     }
     public function update(Request $request, Course $course)
     {
         $request->validate([
+            'classroom_id' => 'required|exists:classrooms,id',
             'courses_code' => 'required|unique:courses,courses_code,' . $course->id,
             'name' => 'required',
         ]);
         $course->update([
+            'classroom_id' => $request->classroom_id,
             'courses_code' => $request->courses_code,
             'name' => $request->name,
             'semester' => $request->semester,
