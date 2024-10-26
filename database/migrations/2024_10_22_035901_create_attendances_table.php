@@ -14,12 +14,11 @@ return new class extends Migration
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
             $table->foreignId('class_id')->constrained('classes');
-            $table->foreignId('classroom_id')->constrained('classrooms');
             $table->date('date');
             $table->time('time_in');
             $table->time('time_out')->nullable();
-            $table->string('latlon_in');
-            $table->string('latlon_out')->nullable();
+            $table->string('latlong_in');
+            $table->string('latlong_out')->nullable();
             $table->timestamps();
         });
     }
