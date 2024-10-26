@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\AttendanceController;
 use App\Http\Controllers\api\ClassesController;
+use App\Http\Controllers\api\PermissionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,4 @@ Route::get('/courses', [ClassesController::class, 'getCoursesByStudent'])->middl
 Route::post('/checkin', [AttendanceController::class, 'checkin'])->middleware('auth:sanctum');
 Route::get('/is-checkin', [AttendanceController::class, 'isCheckedin'])->middleware('auth:sanctum');
 Route::post('/checkout', [AttendanceController::class, 'checkout'])->middleware('auth:sanctum');
+Route::apiResource('/permission', PermissionController::class)->middleware('auth:sanctum');
