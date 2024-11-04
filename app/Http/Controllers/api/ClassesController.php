@@ -14,15 +14,13 @@ class ClassesController extends Controller
         $user = Auth::user();
         if (!$user) {
             return response()->json([
-                'status' => 'error',
                 'message' => 'Unauthorized'
             ], 401);
         }
-        $courses = Classes::with('course')
+        $courses = Classes::with(['course.classroom'])
             ->where('user_id', $user->id)
             ->get();
         return response()->json([
-            'status' => 'success',
             'data' => $courses
         ], 200);
     }
