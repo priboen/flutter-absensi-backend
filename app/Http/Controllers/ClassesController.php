@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use App\Models\Course;
+use App\Models\GroupClasses;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class ClassesController extends Controller
     public function index(Request $request)
     {
         // $query = Classes::with(['course', 'user'])->orderBy('id', 'desc');
-        $query = Classes::with(['course', 'user']);
+        $query = Classes::with(['course', 'user'])->orderBy('id', 'asc');
         if ($request->has('name')) {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('name', 'like', '%' . $request->name . '%')
@@ -25,24 +26,27 @@ class ClassesController extends Controller
                 $q->where('name', 'like', '%' . $request->course . '%');
             });
         }
-        $classes = $query->orderBy('id', 'desc')->paginate(10);
+        $classes = $query->orderBy('id', 'asc')->paginate(10);
         return view('pages.classes.index', compact('classes'));
     }
     public function create()
     {
         $user = User::all();
         $course = Course::all();
-        return view('pages.classes.create', compact(['user', 'course']));
+        $groupClass = GroupClasses::all();
+        return view('pages.classes.create', compact(['user', 'course', 'groupClass']));
     }
     public function store(Request $request)
     {
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'course_id' => 'required|exists:courses,id',
+            'groupClass_id' => 'required|exists:group_classes,id',
         ]);
         Classes::create([
             'user_id' => $request->user_id,
             'course_id' => $request->course_id,
+            'groupClass_id' => $request->groupClass_id,
         ]);
         return redirect()->route('classes.index')->with('success', 'KRS created successfully');
     }
@@ -57,6 +61,7 @@ class ClassesController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'course_id' => 'required|exists:courses,id',
+            'groupClass_id' => 'required',
         ]);
         $class->update($request->all());
         return redirect()->route('classes.index')->with('success', 'KRS updated successfully');
