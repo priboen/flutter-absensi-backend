@@ -8,7 +8,8 @@ class Classes extends Model
 {
     protected $fillable = [
         'course_id',
-        'user_id'
+        'user_id',
+        'groupClass_id',
     ];
 
     // Relasi One-to-One dengan User
@@ -35,5 +36,10 @@ class Classes extends Model
     public function classroom()
     {
         return $this->belongsTo(Classroom::class);
+    }
+
+    public function groupClass()
+    {
+        return $this->belongsTo(GroupClasses::class);
     }
 }
