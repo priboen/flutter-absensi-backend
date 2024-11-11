@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -14,6 +15,11 @@ class UserController extends Controller
             ->orderBy('id', 'desc')
             ->paginate(10);
         return view('pages.users.index', compact('users'));
+    }
+    public function show()
+    {
+        $user = Auth::user();   
+        return view('pages.users.show', compact('user'));
     }
     public function create()
     {
