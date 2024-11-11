@@ -13,8 +13,8 @@ class AttendanceController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'class_id' => 'required|exists:classes,id', // Pastikan class_id ada
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
         if ($validator->fails()) {
