@@ -29,7 +29,7 @@
                     <form action="{{ route('users.store') }}" method="POST">
                         @csrf
                         <div class="card-header">
-                            <h4>Masukan</h4>
+                            <h4>Masukan Data Pengguna Baru</h4>
                         </div>
                         <div class="card-body">
                             <div class="form-group">
@@ -47,16 +47,23 @@
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email"
-                                    class="form-control @error('email')
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            @
+                                        </div>
+                                    </div>
+                                    <input type="email"
+                                        class="form-control @error('email')
                                 is-invalid
                             @enderror"
-                                    name="email">
-                                @error('email')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
+                                        name="email">
+                                    @error('email')
+                                        <div class="invalid-feedback">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
@@ -79,8 +86,15 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <label>Nomor Telephone</label>
-                                <input type="number" class="form-control" name="phone">
+                                <label>Phone Number</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-phone"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control phone-number" name="phone">
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label>Nomor Induk</label>
