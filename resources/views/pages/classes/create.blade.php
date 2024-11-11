@@ -32,10 +32,11 @@
                             <h4>Masukan Data Rencana Studi</h4>
                         </div>
                         <div class="card-body">
+                            <div class="section-title">Mahasiswa</div>
                             <div class="form-group">
-                                <label>Mahasiswa</label>
-                                <select name="user_id" class="form-control @error('user_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Mahasiswa --</option>
+                                <label>Pilih Mahasiswa</label>
+                                <select name="user_id" class="form-control select2 @error('user_id') is-invalid @enderror">
+                                    <option disabled selected>Ketuk untuk menambahkan data</option>
                                     @foreach ($user as $us)
                                         <option value="{{ $us->id }}">{{ $us->name }} -
                                             {{ $us->unique_number }}</option>
@@ -47,16 +48,34 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="section-title">Mata Kuliah</div>
                             <div class="form-group">
-                                <label>Mahasiswa</label>
-                                <select name="course_id" class="form-control @error('course_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Mata Kuliah --</option>
+                                <label>Pilih Mata Kuliah Mahasiswa</label>
+                                <select name="course_id"
+                                    class="form-control select2 @error('course_id') is-invalid @enderror">
+                                    <option disabled selected>Ketuk untuk menambahkan data</option>
                                     @foreach ($course as $cs)
                                         <option value="{{ $cs->id }}">{{ $cs->courses_code }} -
                                             {{ $cs->name }} - {{ $cs->credits }} SKS</option>
                                     @endforeach
                                 </select>
                                 @error('course_id')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="section-title">Kelas</div>
+                            <div class="form-group">
+                                <label>Pilih Kelas</label>
+                                <select name="groupClass_id"
+                                    class="form-control select2 @error('course_id') is-invalid @enderror">
+                                    <option disabled selected>Ketuk untuk menambahkan data</option>
+                                    @foreach ($groupClass as $cs)
+                                        <option value="{{ $cs->id }}">{{ $cs->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('groupClass_id')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -74,4 +93,5 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 @endpush
