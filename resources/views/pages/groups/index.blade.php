@@ -12,13 +12,13 @@
         <section class="section">
             <div class="section-header">
                 <h1>Grup Belajar</h1>
-                {{-- <div class="section-header-button">
-                    <a href="{{ route('permissions.create') }}" class="btn btn-primary">Add New</a>
-                </div> --}}
+                <div class="section-header-button">
+                    <a href="{{ route('groups.create') }}" class="btn btn-primary">Tambah</a>
+                </div>
                 <div class="section-header-breadcrumb">
                     <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
                     <div class="breadcrumb-item"><a href="#">Grup Belajar</a></div>
-                    <div class="breadcrumb-item">All Grup Belajar</div>
+                    <div class="breadcrumb-item">Semua Grup Belajar</div>
                 </div>
             </div>
             <div class="section-body">
@@ -29,13 +29,13 @@
                 </div>
                 <h2 class="section-title">Grup Belajar</h2>
                 <p class="section-lead">
-                    You can manage all Grup Belajar, such as editing, deleting and more.
+                    Kamu dapat mengatur seluruh Grup Belajar, seperti mengedit, menghapus dan lainnya.
                 </p>
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4>All Grup Belajar</h4>
+                                <h4>Data Grup Belajar</h4>
                             </div>
                             <div class="card-body">
                                 <div class="float-right">

@@ -30,6 +30,7 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+        activity()->causedBy($user)->log('Melakukan Log In pada Aplikasi Mobile');
 
         return response(['user' => $user, 'token' => $token], 200);
     }
@@ -38,6 +39,7 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
+        activity()->causedBy($request->user())->log('Melakukan Log Out pada Aplikasi Mobile');
 
         return response(['message' => 'Logged out'], 200);
     }
@@ -59,6 +61,7 @@ class AuthController extends Controller
         // $user->image_url = $image->hashName();
         $user->face_embedding = $face_embedding;
         $user->save();
+        activity()->causedBy($user)->log('Mendaftarkan face embbeding');
 
         return response([
             'message' => 'Profile updated',
