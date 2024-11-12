@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceController extends Controller
 {
@@ -29,6 +30,7 @@ class AttendanceController extends Controller
             $attendance->time_out = $attendance->time_out ? Carbon::parse($attendance->time_out)->format('H:i') : null;
             return $attendance;
         });
+        activity()->causedBy(Auth::user())->log('Menampilkan halaman absensi');
         return view('pages.attendances.index', compact('attendances'));
     }
 }

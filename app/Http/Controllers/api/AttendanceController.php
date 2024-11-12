@@ -31,14 +31,14 @@ class AttendanceController extends Controller
             return response(['message' => 'Kamu sudah melakukan Presensi!'], 400);
         }
 
-        // Simpan presensi baru
         $attendance = new Attendance;
-        $attendance->class_id = $request->class_id; // Ambil class_id dari request Ambil classroom_id dari class_id
-        $attendance->date = now()->toDateString(); // Tanggal saat ini
-        $attendance->time_in = now()->toTimeString(); // Waktu saat ini
-        $attendance->latlong_in = $request->latitude . ',' . $request->longitude; // Format latlong
+        $attendance->class_id = $request->class_id;
+        $attendance->date = now()->toDateString();
+        $attendance->time_in = now()->toTimeString();
+        $attendance->latlong_in = $request->latitude . ',' . $request->longitude;
 
         $attendance->save();
+        activity()->causedBy(auth('sanctum')->user())->log('Sudah melakukan presensi datang pada kelas ' . $attendance->class->course->name);
 
         return response([
             'message' => 'Checkin success',
@@ -46,13 +46,12 @@ class AttendanceController extends Controller
         ], 200);
     }
 
-    // Checkout
     public function checkout(Request $request)
     {
         $request->validate([
             'class_id' => 'required|exists:classes,id',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
         $attendance = Attendance::where('class_id', $request->class_id)
@@ -68,6 +67,8 @@ class AttendanceController extends Controller
         $attendance->time_out = now()->toTimeString();
         $attendance->latlong_out = $request->latitude . ',' . $request->longitude;
         $attendance->save();
+
+        activity()->causedBy(auth('sanctum')->user())->log('Sudah melakukan presensi pulang pada kelas ' . $attendance->class->course->name);
 
         return response([
             'message' => 'Terima kasih sudah berkuliah hari ini!',
