@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\AttendanceScheduleController;
 use App\Http\Controllers\ClassesController;
@@ -27,7 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendances', AttendanceController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('groups', GroupClassController::class);
-    Route::resource('attendance-schedules', AttendanceScheduleController::class);
+    Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
+
 
     // Route::middleware([RoleMiddleware::class . 'admin'])->group(function () {});
 });

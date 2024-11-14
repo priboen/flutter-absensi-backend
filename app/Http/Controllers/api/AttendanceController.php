@@ -49,6 +49,7 @@ class AttendanceController extends Controller
         $attendance->latlong_in = $request->latitude . ',' . $request->longitude;
 
         $attendance->save();
+        activity()->causedBy(auth('sanctum')->user())->log('Sudah melakukan presensi datang pada kelas ' . $attendance->class->course->name);
 
         return response([
             'message' => 'Checkin success',
@@ -56,13 +57,12 @@ class AttendanceController extends Controller
         ], 200);
     }
 
-    // Checkout
     public function checkout(Request $request)
     {
         $request->validate([
             'class_id' => 'required|exists:classes,id',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric',
+            'latitude' => 'required',
+            'longitude' => 'required',
         ]);
 
         $attendance = Attendance::where('class_id', $request->class_id)
@@ -78,6 +78,8 @@ class AttendanceController extends Controller
         $attendance->time_out = now()->toTimeString();
         $attendance->latlong_out = $request->latitude . ',' . $request->longitude;
         $attendance->save();
+
+        activity()->causedBy(auth('sanctum')->user())->log('Sudah melakukan presensi pulang pada kelas ' . $attendance->class->course->name);
 
         return response([
             'message' => 'Terima kasih sudah berkuliah hari ini!',
