@@ -92,7 +92,7 @@
                             <div class="form-group">
                                 <label>Ruang Kelas</label>
                                 <select name="classroom_id"
-                                    class="form-control @error('classroom_id') is-invalid @enderror">
+                                    class="form-control select2 @error('classroom_id') is-invalid @enderror">
                                     <option value="">-- Pilih Ruang Kelas --</option>
                                     @foreach ($classrooms as $classroom)
                                         <option
@@ -120,6 +120,7 @@
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('library/bootstrap-timepicker/js/bootstrap-timepicker.min.js') }}"></script>
     <script>
         $('.timepicker').timepicker({

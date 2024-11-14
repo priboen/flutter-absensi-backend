@@ -27,9 +27,10 @@
             </li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="fa-solid fa-clipboard-user"></i><span>
-                        Kehadiran</span></a>
+                        Presensi</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ route('attendances.index') }}">Presensi Kuliah</a></li>
+                    <li><a class="nav-link" href="{{ route('attendance-schedules.index') }}">Daftar Presensi</a></li>
+                    <li><a class="nav-link" href="{{ route('attendances.index') }}">Presensi Mahasiswa</a></li>
                     <li><a class="nav-link" href="{{ route('permissions.index') }}">Perizinan Kuliah</a></li>
                 </ul>
             </li>

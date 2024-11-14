@@ -14,4 +14,9 @@ class GroupClasses extends Model
     {
         return $this->hasMany(Classes::class);
     }
+
+    public function attendanceSchedules()
+    {
+        return $this->hasMany(AttendanceSchedule::class);
+    }
 }

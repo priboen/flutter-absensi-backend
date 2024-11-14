@@ -57,11 +57,6 @@ class CourseController extends Controller
             'time_in' => $request->time_in,
             'credits' => $request->credits,
         ]);
-        if ($request->password) {
-            $course->update([
-                'courses_code' => $request->courses_code,
-            ]);
-        }
         return redirect()->route('courses.index')->with('success', 'Course updated successfully');
     }
     public function destroy(Course $course)

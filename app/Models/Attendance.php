@@ -24,4 +24,9 @@ class Attendance extends Model
     {
         return $this->belongsTo(Classroom::class);
     }
+
+    public function attendanceSchedule()
+    {
+        return $this->belongsTo(AttendanceSchedule::class);
+    }
 }

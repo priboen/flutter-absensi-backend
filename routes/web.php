@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\AttendanceScheduleController;
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\CourseController;
@@ -26,6 +27,7 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendances', AttendanceController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('groups', GroupClassController::class);
+    Route::resource('attendance-schedules', AttendanceScheduleController::class);
 
     // Route::middleware([RoleMiddleware::class . 'admin'])->group(function () {});
 });

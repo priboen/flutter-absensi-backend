@@ -63,7 +63,11 @@ class ClassesController extends Controller
             'course_id' => 'required|exists:courses,id',
             'groupClass_id' => 'required',
         ]);
-        $class->update($request->all());
+        $class->update([
+            'user_id' => $request->user_id,
+            'course_id' => $request->course_id,
+            'groupClass_id' => $request->groupClass_id,
+        ]);
         return redirect()->route('classes.index')->with('success', 'KRS updated successfully');
     }
     public function destroy(Classes $class)
