@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
 use App\Models\AttendanceSchedule;
+use App\Models\Classes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,8 +26,10 @@ class AttendanceController extends Controller
             ], 422);
         }
 
-        $schedule = AttendanceSchedule::where('groupClass_id', $request->class_id)
-            ->whereDate('date', now()->toDateString())
+        $class = Classes::find($request->class_id);
+
+        $schedule = AttendanceSchedule::where('groupClass_id', $class->groupClass_id)
+            ->where('date', date('Y-m-d'))
             ->where('is_open', true)
             ->first();
 
