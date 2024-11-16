@@ -58,6 +58,7 @@
                                             <th>Kelas</th>
                                             <th>Jam Masuk</th>
                                             <th>Jam Keluar</th>
+                                            <th>Status</th>
                                             <th>Action</th>
                                         </tr>
                                         @foreach ($schedule as $sch)
@@ -68,13 +69,26 @@
                                                 <td>{{ $sch->time_start }}</td>
                                                 <td>{{ $sch->time_end }}</td>
                                                 <td>
-                                                    <div class="d-flex justify-content-center">
+                                                    <div class="form-group d-flex">
+                                                        <label class="custom-switch mt-2">
+                                                            <input type="checkbox" name="custom-switch-checkbox"
+                                                                class="custom-switch-input toggle-switch"
+                                                                data-id="{{ $sch->id }}"
+                                                                data-status="{{ $sch->is_open }}"
+                                                                {{ $sch->is_open ? 'checked' : '' }}>
+                                                            <span class="custom-switch-indicator"></span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex">
                                                         <a href='{{ route('attendance-schedules.edit', $sch->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
                                                             Edit
                                                         </a>
-                                                        <form action="{{ route('attendance-schedules.destroy', $sch->id) }}"
+                                                        <form
+                                                            action="{{ route('attendance-schedules.destroy', $sch->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
                                                             <input type="hidden" name="_token"
@@ -102,9 +116,31 @@
 @endsection
 
 @push('scripts')
-    <!-- JS Libraies -->
     <script src="{{ asset('library/selectric/public/jquery.selectric.min.js') }}"></script>
-
-    <!-- Page Specific JS File -->
     <script src="{{ asset('js/page/features-posts.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.toggle-switch').change(function() {
+                let scheduleId = $(this).data('id');
+                let newStatus = $(this).prop('checked') ? 1 : 0;
+
+                $.ajax({
+                    url: '{{ route('attendance-schedules.toggleStatus') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        id: scheduleId,
+                        is_open: newStatus
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                    },
+                    error: function(xhr) {
+                        alert('An error occurred while updating status');
+                    }
+                });
+            });
+        });
+    </script>
 @endpush
+

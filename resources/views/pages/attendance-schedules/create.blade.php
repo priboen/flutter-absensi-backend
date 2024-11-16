@@ -108,6 +108,17 @@
                                             @enderror
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label>Jumlah Jadwal</label>
+                                        <input type="number" class="form-control @error('count') is-invalid @enderror"
+                                            name="count" min="1" value="1">
+                                        @error('count')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <p>akan diulangi dalam interval 7 hari</p>
+                                    </div>
                                 </div>
                                 <div class="card-footer text-right">
                                     <button class="btn btn-primary">Submit</button>
