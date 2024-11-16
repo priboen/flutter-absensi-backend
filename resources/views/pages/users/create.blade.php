@@ -26,12 +26,22 @@
             <div class="section-body">
                 <h2 class="section-title">Users</h2>
                 <div class="card">
-                    <form action="{{ route('users.store') }}" method="POST">
+                    <form action="{{ route('users.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-header">
                             <h4>Masukan Data Pengguna Baru</h4>
                         </div>
                         <div class="card-body">
+                            <div class="form-group">
+                                <label>Foto Profil</label>
+                                <input type="file" name="image_url"
+                                    class="form-control @error('image_url') is-invalid @enderror">
+                                @error('image_url')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                             <div class="form-group">
                                 <label>Nama</label>
                                 <input type="text"
