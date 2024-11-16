@@ -19,9 +19,9 @@ class PermissionController extends Controller
     }
     public function show($id)
     {
-        $permission = Permission::with('class')->find($id);
-        Activity()->causedBy(Auth::user())->log('Menampilkan detail perizinan ' . $permission->users->name);
-        return view('pages.permissions.show', compact('permission'));
+        $permissions = Permission::with('class')->find($id);
+        activity()->causedBy(Auth::user())->log('Menampilkan detail perizinan ' . $permissions->class->user->name);
+        return view('pages.permissions.show', compact('permissions'));
     }
     public function edit($id)
     {
@@ -30,15 +30,13 @@ class PermissionController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $permission = Permission::find($id);
-        $permission->is_approved = $request->is_approved;
-        $oldData = $permission->getOriginal();
-        $newData = $permission->getAttributes();
+        $permissions = Permission::find($id);
+        $permissions->is_approved = $request->is_approved;
+        $oldData = $permissions->getOriginal();
+        $newData = $permissions->getAttributes();
         $str = $request->is_approved == 1 ? 'Disetujui' : 'Ditolak';
-        $permission->save();
-        activity()
-            ->causedBy(Auth::user())
-            ->log($str . ' perizinan ' . $permission->users->name);
+        $permissions->save();
+        activity()->causedBy(Auth::user())->log('Mengubah status perizinan ' . $permissions->class->user->name . ' dari ' . $oldData['is_approved'] . ' menjadi ' . $newData['is_approved']);
         return redirect()->route('permissions.index')->with('success', 'Permission updated successfully');
     }
 }
