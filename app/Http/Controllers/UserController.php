@@ -21,12 +21,11 @@ class UserController extends Controller
     public function show()
     {
         $user = Auth::user();
-        Activity::create([
-            'description' => 'User created a new record',
-            'causer_id' => Auth::id(), // ID pengguna yang melakukan aktivitas
-            'causer_type' => get_class(Auth::user()), // Tipe model pengguna
-        ]);
-        return view('pages.users.show', compact('user'));
+        $imagePath = file_exists(public_path('images/user/' . $user->image_url))
+            ? asset('images/user/' . $user->image_url)
+            : asset('img/avatar/avatar-1.png');
+
+        return view('pages.users.show', compact('user', 'imagePath'));
     }
 
     public function create()
@@ -41,17 +40,16 @@ class UserController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8',
             'unique_number' => 'required|unique:users,unique_number',
+            'image_url' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'role' => $request->role,
-            'unique_number' => $request->unique_number,
-            'password' => Hash::make($request->password),
-            'department' => $request->department,
-        ]);
+        $data = $request->all();
+        if ($request->hasFile('image_url')) {
+            $imageName = $request->file('image_url')->getClientOriginalName();
+            $request->file('image_url')->move(public_path('images/user/'), $imageName);
+            $data['image_url'] = $imageName;
+        }
+        $data['password'] = Hash::make($data['password']);
+        $user = User::create($data);
         $admin = Auth::user();
         activity()->causedBy($admin)->performedOn($user)->log('Created new user: ' . $request->name);
         return redirect()->route('users.index')->with('success', 'User created successfully');
