@@ -45,13 +45,13 @@ class AttendanceController extends Controller
             activity()
                 ->causedBy(auth('sanctum')->user())
                 ->log('Sudah melakukan presensi datang pada kelas ' . $attendance->class->course->name);
-            return response(['message' => 'Checkin success', 'attendance' => $attendance], 200);
+            return response()->json(['message' => 'Presensi berhasil!', 'attendance' => $attendance], 200);
         } catch (ValidationException $e) {
-            return response(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
+            return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
         } catch (ModelNotFoundException $e) {
-            return response(['message' => 'Data tidak ditemukan'], 404);
+            return response()->json(['message' => 'Data tidak ditemukan'], 404);
         } catch (Exception $e) {
-            return response(['message' => 'Terjadi kesalahan server', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Terjadi kesalahan server', 'error' => $e->getMessage()], 500);
         }
     }
     public function checkout(Request $request)
@@ -66,7 +66,7 @@ class AttendanceController extends Controller
                 ->where('date', now()->toDateString())
                 ->first();
             if (!$attendance) {
-                return response(['message' => 'Kamu belum melakukan presensi!'], 400);
+                return response()->json(['message' => 'Kamu belum melakukan presensi datang!'], 400);
             }
             $attendance->update([
                 'time_out' => now()->toTimeString(),
@@ -75,11 +75,11 @@ class AttendanceController extends Controller
             activity()
                 ->causedBy(auth('sanctum')->user())
                 ->log('Sudah melakukan presensi pulang pada kelas ' . $attendance->class->course->name);
-            return response(['message' => 'Terima kasih sudah berkuliah hari ini!', 'attendance' => $attendance], 200);
+            return response()->json(['message' => 'Presensi berhasil!', 'attendance' => $attendance], 200);
         } catch (ValidationException $e) {
-            return response(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
+            return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
         } catch (Exception $e) {
-            return response(['message' => 'Terjadi kesalahan server', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Terjadi kesalahan server', 'error' => $e->getMessage()], 500);
         }
     }
     public function isCheckedin(Request $request)
@@ -91,14 +91,11 @@ class AttendanceController extends Controller
             $attendance = Attendance::where('class_id', $validatedData['class_id'])
                 ->where('date', now()->toDateString())
                 ->first();
-            return response([
-                'checkin' => $attendance ? true : false,
-                'checkout' => $attendance && $attendance->time_out ? true : false,
-            ], 200);
+            return response()->json(['message' => 'Data presensi', 'attendance' => $attendance], 200);
         } catch (ValidationException $e) {
-            return response(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
+            return response()->json(['message' => 'Validation Error', 'errors' => $e->errors()], 422);
         } catch (Exception $e) {
-            return response(['message' => 'Terjadi kesalahan server', 'error' => $e->getMessage()], 500);
+            return response()->json(['message' => 'Terjadi kesalahan server', 'error' => $e->getMessage()], 500);
         }
     }
 }
