@@ -31,6 +31,11 @@ class AttendanceSchedule extends Model
         return $this->hasMany(Attendance::class);
     }
 
+    public function classes()
+    {
+        return $this->hasMany(Classes::class);
+    }
+
     public function isOpen()
     {
         return $this->is_open;
