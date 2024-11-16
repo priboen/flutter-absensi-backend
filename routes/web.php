@@ -28,6 +28,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('attendances', AttendanceController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('groups', GroupClassController::class);
+    Route::resource('attendance-schedules', AttendanceScheduleController::class);
+    Route::post('/attendance-schedules/toggle-status', [AttendanceScheduleController::class, 'toggleStatus'])->name('attendance-schedules.toggleStatus');
     Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
 
 
