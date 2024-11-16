@@ -33,14 +33,15 @@
                             <h4>Ubah Data</h4>
                         </div>
                         <div class="card-body">
+                            <div class="section-title">Mahasiswa</div>
                             <div class="form-group">
-                                <label>Mahasiswa</label>
-                                <select name="user_id" class="form-control @error('user_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Mahasiswa --</option>
-                                    @foreach ($user as $mhs)
-                                        <option
-                                            value="{{ $mhs->id }}"{{ $class->user_id == $mhs->id ? 'selected' : '' }}>
-                                            {{ $mhs->name }} </option>
+                                <label>Pilih Mahasiswa</label>
+                                <select name="user_id" class="form-control select2 @error('user_id') is-invalid @enderror">
+                                    <option disabled selected>Ketuk untuk menambahkan data</option>
+                                    @foreach ($user as $us)
+                                        <option value="{{ $us->id }}" {{ $us->id == $class->user_id ? 'selected' : '' }}>
+                                            {{ $us->name }} -
+                                            {{ $us->unique_number }}</option>
                                     @endforeach
                                 </select>
                                 @error('user_id')
@@ -49,59 +50,53 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="section-title">Mata Kuliah</div>
                             <div class="form-group">
-                                <label>Mata Kuliah</label>
-                                <select name="course_id" class="form-control @error('course_id') is-invalid @enderror">
-                                    <option value="">-- Pilih Mata Kuliah --</option>
-                                    @foreach ($course as $mk)
-                                        <option
-                                            value="{{ $mk->id }}"{{ $class->course_id == $mk->id ? 'selected' : '' }}>
-                                            {{ $mk->name }} </option>
+                                <label>Pilih Mata Kuliah Mahasiswa</label>
+                                <select name="course_id"
+                                    class="form-control select2 @error('course_id') is-invalid @enderror">
+                                    <option disabled selected>Ketuk untuk menambahkan data</option>
+                                    @foreach ($course as $cs)
+                                        <option value="{{ $cs->id }} "
+                                            {{ $cs->id == $class->course_id ? 'selected' : '' }}>
+                                            {{ $cs->name }} - {{ $cs->credits }} SKS</option>
                                     @endforeach
                                 </select>
-                                @error('classroom_id')
+                                @error('course_id')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-                            {{-- <div class="form-group">
-                                <label>Time In</label>
-                                <input type="text"
-                                    class="form-control timepicker @error('time_in')
-                            is-invalid
-                        @enderror"
-                                    name="time_in" value="{{ $schedule->time_in }}">
-                                @error('time_in')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
+                            <div class="section-title">Kelas</div>
                             <div class="form-group">
-                                <label>Time Out</label>
-                                <input type="text"
-                                    class="form-control timepicker @error('time_out')
-                            is-invalid
-                        @enderror"
-                                    name="time_out" value="{{ $schedule->time_in }}">
-                                @error('time_out')
+                                <label>Pilih Kelas</label>
+                                <select name="groupClass_id"
+                                    class="form-control select2 @error('groupClass_id') is-invalid @enderror">
+                                    <option disabled selected>Ketuk untuk menambahkan data</option>
+                                    @foreach ($groupClass as $gc)
+                                        <option value="{{ $gc->id }}"
+                                            {{ $gc->id == $class->groupClass_id ? 'selected' : '' }}>
+                                            {{ $gc->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('groupClass_id')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
                                 @enderror
                             </div>
-                        </div> --}}
                             <div class="card-footer text-right">
                                 <button class="btn btn-primary">Submit</button>
                             </div>
                     </form>
                 </div>
-
             </div>
         </section>
     </div>
 @endsection
 
 @push('scripts')
+    <script src="{{ asset('library/select2/dist/js/select2.full.min.js') }}"></script>
 @endpush

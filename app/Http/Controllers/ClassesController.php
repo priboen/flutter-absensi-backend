@@ -57,7 +57,8 @@ class ClassesController extends Controller
     {
         $user = User::all();
         $course = Course::all();
-        return view('pages.classes.edit', compact(['class', 'user', 'course']));
+        $groupClass = GroupClasses::all();
+        return view('pages.classes.edit', compact(['class', 'user', 'course', 'groupClass']));
     }
     public function update(Request $request, Classes $class)
     {
