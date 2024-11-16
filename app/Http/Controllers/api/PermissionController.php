@@ -20,7 +20,8 @@ class PermissionController extends Controller
         $permission->date_permission = $request->date_permission;
         $permission->reason = $request->reason;
         $permission->image = $request->image;
-        $permission->is_approved = 0;
+        // $permission->is_approved = 0;
+        $permission->is_approved = $request->has('is_approved') ? $request->is_approved : null;
 
         if ($request->hasFile('image')) {
             $request->file('image')->move('images/permission/', $request->file('image')->getClientOriginalName());
