@@ -75,10 +75,12 @@
                                                     {{ $permission->date_permission }}
                                                 </td>
                                                 <td>
-                                                    @if ($permission->is_approved == 1)
-                                                        Di Izinkan
-                                                    @else
-                                                        Di Tolak
+                                                    @if (is_null($permission->is_approved))
+                                                        <div class="badge badge-warning">Perlu di tinjau</div>
+                                                    @elseif ($permission->is_approved == 1)
+                                                        <div class="badge badge-success">Di Izinkan</div>
+                                                    @elseif ($permission->is_approved == 0)
+                                                        <div class="badge badge-danger">Di Tolak</div>
                                                     @endif
                                                 </td>
                                                 <td>
@@ -88,7 +90,6 @@
                                                             <i class="fas fa-edit"></i>
                                                             Detail
                                                         </a>
-
                                                         <form action="{{ route('permissions.destroy', $permission->id) }}"
                                                             method="POST" class="ml-2">
                                                             <input type="hidden" name="_method" value="DELETE" />
@@ -102,8 +103,6 @@
                                                 </td>
                                             </tr>
                                         @endforeach
-
-
                                     </table>
                                 </div>
                                 <div class="float-right">

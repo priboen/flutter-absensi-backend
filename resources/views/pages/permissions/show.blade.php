@@ -31,63 +31,62 @@
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
                                         <label>Nama Mahasiswa</label>
-                                        <p>{{ $permission->class->user->name }}</p>
+                                        <p>{{ $permissions->class->user->name }}</p>
                                     </div>
                                     <div class="form-group col-md-6 col-12">
                                         <label>Nomor Induk</label>
-                                        <p>{{ $permission->class->user->unique_number }}</p>
+                                        <p>{{ $permissions->class->user->unique_number }}</p>
                                     </div>
 
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
                                         <label>Email</label>
-                                        <p>{{ $permission->class->user->email }}</p>
+                                        <p>{{ $permissions->class->user->email }}</p>
                                     </div>
                                     <div class="form-group col-md-6 col-12">
                                         <label>Program Studi</label>
-                                        <p>{{ $permission->class->user->department }}</p>
+                                        <p>{{ $permissions->class->user->department }}</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
                                         <label>Tanggal Pengajuan</label>
-                                        <p>{{ $permission->date_permission }}</p>
+                                        <p>{{ $permissions->date_permission }}</p>
                                     </div>
                                     <div class="form-group col-md-6 col-12">
                                         <label>Alasan</label>
-                                        <p>{{ $permission->reason }}</p>
+                                        <p>{{ $permissions->reason }}</p>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6 col-12">
                                         <label>Bukti Dukung</label>
-                                        @if ($permission->image)
-                                            <!-- Jika image tersedia, tampilkan gambar -->
+                                        @if ($permissions->image)
                                             <div>
-                                                <img src="{{ asset('images/permission/' . $permission->image) }}"
+                                                <img src="{{ asset('images/permission/' . $permissions->image) }}"
                                                     alt="Bukti Dukung" class="img-thumbnail mb-3" style="max-width: 200px;">
                                             </div>
                                         @else
-                                            <!-- Jika image kosong, tampilkan teks -->
                                             <p>Tidak ada bukti dukung</p>
                                         @endif
                                     </div>
                                     <div class="form-group col-md-6 col-12">
                                         <label>Status Izin</label>
                                         <p>
-                                            @if ($permission->is_approved == 1)
-                                                Di Izinkan
-                                            @else
-                                                Tidak di Izinkan
+                                            @if (is_null($permissions->is_approved))
+                                                <div class="badge badge-warning">Perlu di tinjau</div>
+                                            @elseif ($permissions->is_approved == 1)
+                                                <div class="badge badge-success">Di Izinkan</div>
+                                            @elseif ($permissions->is_approved == 0)
+                                                <div class="badge badge-danger">Di Tolak</div>
                                             @endif
                                         </p>
                                     </div>
-
                                 </div>
                             </div>
                             <div class="card-footer text-right">
-                                <a href="{{ route('permissions.edit', $permission->id) }}" class="btn btn-primary">Edit
+                                <a href="{{ route('permissions.edit', $permissions->id) }}" class="btn btn-primary">Edit
                                     Permission For Approve</a>
                             </div>
                         </div>
@@ -101,6 +100,4 @@
 @push('scripts')
     <!-- JS Libraries -->
     <script src="{{ asset('library/summernote/dist/summernote-bs4.js') }}"></script>
-
-    <!-- Page Specific JS File -->
 @endpush
