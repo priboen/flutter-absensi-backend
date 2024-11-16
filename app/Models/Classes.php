@@ -40,6 +40,6 @@ class Classes extends Model
 
     public function groupClass()
     {
-        return $this->belongsTo(GroupClasses::class);
+        return $this->belongsTo(GroupClasses::class, 'groupClass_id');
     }
 }
