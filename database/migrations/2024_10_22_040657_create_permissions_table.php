@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('permissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('class_id')->references('id')->on('classes');
+            $table->foreignId('class_id')->references('id')->on('classes')->onDelete('cascade');
             $table->date('date_permission');
             $table->text('reason');
             $table->string('image')->nullable();
