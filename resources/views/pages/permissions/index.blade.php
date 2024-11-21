@@ -31,8 +31,6 @@
                 <p class="section-lead">
                     You can manage all Permissions, such as editing, deleting and more.
                 </p>
-
-
                 <div class="row mt-4">
                     <div class="col-12">
                         <div class="card">
@@ -40,7 +38,6 @@
                                 <h4>All Permissions</h4>
                             </div>
                             <div class="card-body">
-
                                 <div class="float-right">
                                     <form method="GET" action="{{ route('permissions.index') }}">
                                         <div class="input-group">
@@ -52,9 +49,7 @@
                                         </div>
                                     </form>
                                 </div>
-
                                 <div class="clearfix mb-3"></div>
-
                                 <div class="table-responsive">
                                     <table class="table-striped table">
                                         <tr>
@@ -84,7 +79,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    <div class="d-flex justify-content-center">
+                                                    <div class="d-flex justify-content-lg-evenly">
                                                         <a href='{{ route('permissions.show', $permission->id) }}'
                                                             class="btn btn-sm btn-info btn-icon">
                                                             <i class="fas fa-edit"></i>
