@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Permission;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,13 +31,15 @@ class PermissionController extends Controller
     }
     public function update(Request $request, $id)
     {
-        $permissions = Permission::find($id);
-        $permissions->is_approved = $request->is_approved;
-        $oldData = $permissions->getOriginal();
-        $newData = $permissions->getAttributes();
-        $str = $request->is_approved == 1 ? 'Disetujui' : 'Ditolak';
-        $permissions->save();
-        activity()->causedBy(Auth::user())->log('Mengubah status perizinan ' . $permissions->class->user->name . ' dari ' . $oldData['is_approved'] . ' menjadi ' . $newData['is_approved']);
-        return redirect()->route('permissions.index')->with('success', 'Permission updated successfully');
+        try {
+            $permission = Permission::find($id);
+            $permission->update([
+                'status' => $request->status,
+            ]);
+            activity()->causedBy(Auth::user())->log('Mengubah status perizinan ' . $permission->class->user->name);
+            return redirect()->route('permissions.index')->with('success', 'Status perizinan berhasil diubah');
+        } catch (Exception $e) {
+            return redirect()->route('permissions.index')->with('error', 'Gagal mengubah status perizinan. Silakan coba lagi.' . $e->getMessage());
+        }
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Classroom;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class CourseController extends Controller
 {
@@ -24,21 +25,29 @@ class CourseController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'classroom_id' => 'required|exists:classrooms,id',
-            'courses_code' => 'required|unique:courses,courses_code',
-            'name' => 'required',
-        ]);
-        Course::create([
-            'classroom_id' => $request->classroom_id,
-            'courses_code' => $request->courses_code,
-            'name' => $request->name,
-            'semester' => $request->semester,
-            'time_in' => $request->time_in,
-            'credits' => $request->credits,
-        ]);
-        activity()->causedBy(Auth::user())->log('Created new course: ' . $request->name);
-        return redirect()->route('courses.index')->with('success', 'Course created successfully');
+        try {
+            $request->validate([
+                'classroom_id' => 'required|exists:classrooms,id',
+                'courses_code' => 'required|unique:courses,courses_code',
+                'name' => 'required',
+            ]);
+
+            Course::create([
+                'classroom_id' => $request->classroom_id,
+                'courses_code' => $request->courses_code,
+                'name' => $request->name,
+                'semester' => $request->semester,
+                'time_in' => $request->time_in,
+                'credits' => $request->credits,
+            ]);
+
+            activity()->causedBy(Auth::user())->log('Created new course: ' . $request->name);
+            return redirect()->route('courses.index')->with('success', 'Course created successfully');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            return redirect()->route('courses.index')->with('error', 'Failed to create course. Please try again.' . $e->getMessage());
+        }
     }
     public function edit(Course $course)
     {
@@ -47,33 +56,37 @@ class CourseController extends Controller
     }
     public function update(Request $request, Course $course)
     {
-        $oldData = $course->getOriginal();
-        $newData = $request->all();
+        try {
+            $oldData = $course->getOriginal();
+            $newData = $request->all();
 
-        $request->validate([
-            'classroom_id' => 'required|exists:classrooms,id',
-            'courses_code' => 'required|unique:courses,courses_code,' . $course->id,
-            'name' => 'required',
-        ]);
-        $course->update([
-            'classroom_id' => $request->classroom_id,
-            'courses_code' => $request->courses_code,
-            'name' => $request->name,
-            'semester' => $request->semester,
-            'time_in' => $request->time_in,
-            'credits' => $request->credits,
-        ]);
-        if ($request->password) {
-            $course->update([
-                'courses_code' => $request->courses_code,
+            $request->validate([
+                'classroom_id' => 'required|exists:classrooms,id',
+                'courses_code' => 'required|unique:courses,courses_code,' . $course->id,
+                'name' => 'required',
             ]);
+
+            $course->update([
+                'classroom_id' => $request->classroom_id,
+                'courses_code' => $request->courses_code,
+                'name' => $request->name,
+                'semester' => $request->semester,
+                'time_in' => $request->time_in,
+                'credits' => $request->credits,
+            ]);
+
+            activity()
+                ->causedBy(Auth::user())
+                ->performedOn($course)
+                ->withProperties(['old_data' => $oldData, 'new_data' => $newData])
+                ->log('Updated course details: ' . $course->name);
+
+            return redirect()->route('courses.index')->with('success', 'Course updated successfully');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            return redirect()->route('courses.index')->with('error', 'Failed to update course. Please try again.' . $e->getMessage());
         }
-        activity()
-            ->causedBy(Auth::user())
-            ->performedOn($course)
-            ->withProperties(['old_data' => $oldData, 'new_data' => $newData])
-            ->log('Updated user details: ' . $course->name);
-        return redirect()->route('courses.index')->with('success', 'Course updated successfully');
     }
     public function destroy(Course $course)
     {

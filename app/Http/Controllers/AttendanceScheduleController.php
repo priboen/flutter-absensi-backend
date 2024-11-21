@@ -36,6 +36,38 @@ class AttendanceScheduleController extends Controller
         return view('pages.attendance-schedules.create', compact(['course', 'groupClass']));
     }
 
+    // public function store(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'course_id' => 'required|exists:courses,id',
+    //         'groupClass_id' => 'required|exists:group_classes,id',
+    //         'date' => 'required|date',
+    //         'time_start' => 'required',
+    //         'time_end' => 'required',
+    //         'count' => 'required|integer|min:1',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return response()->json(['errors' => $validator->errors()], 422);
+    //     }
+
+    //     $count = $request->count;
+    //     $startDate = Carbon::parse($request->date);
+
+    //     for ($i = 0; $i < $count; $i++) {
+    //         AttendanceSchedule::create([
+    //             'course_id' => $request->course_id,
+    //             'groupClass_id' => $request->groupClass_id,
+    //             'date' => $startDate->copy()->addWeeks($i)->toDateString(),
+    //             'time_start' => $request->time_start,
+    //             'time_end' => $request->time_end,
+    //             'is_open' => false,
+    //         ]);
+    //     }
+
+    //     return redirect()->route('attendance-schedules.index')->with('success', 'Attendance schedules created successfully');
+    // }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -48,26 +80,36 @@ class AttendanceScheduleController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Data gagal ditambahkan. Silakan periksa input Anda.');
         }
 
-        $count = $request->count;
-        $startDate = Carbon::parse($request->date);
+        try {
+            $count = $request->count;
+            $startDate = Carbon::parse($request->date);
 
-        for ($i = 0; $i < $count; $i++) {
-            AttendanceSchedule::create([
-                'course_id' => $request->course_id,
-                'groupClass_id' => $request->groupClass_id,
-                'date' => $startDate->copy()->addWeeks($i)->toDateString(),
-                'time_start' => $request->time_start,
-                'time_end' => $request->time_end,
-                'is_open' => false,
-            ]);
+            for ($i = 0; $i < $count; $i++) {
+                AttendanceSchedule::create([
+                    'course_id' => $request->course_id,
+                    'groupClass_id' => $request->groupClass_id,
+                    'date' => $startDate->copy()->addWeeks($i)->toDateString(),
+                    'time_start' => $request->time_start,
+                    'time_end' => $request->time_end,
+                    'is_open' => false,
+                ]);
+            }
+
+            return redirect()->route('attendance-schedules.index')
+                ->with('success', 'Attendance schedules created successfully.');
+        } catch (\Exception $e) {
+            // Tangkap error dan kembalikan flash message
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
-
-        return redirect()->route('attendance-schedules.index')->with('success', 'Attendance schedules created successfully');
     }
-
 
     public function edit($id)
     {
@@ -80,6 +122,30 @@ class AttendanceScheduleController extends Controller
         return view('pages.attendance-schedules.edit', compact(['schedule', 'course', 'groupClass']));
     }
 
+    // public function update(Request $request, $id)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'course_id' => 'required|exists:courses,id',
+    //         'groupClass_id' => 'required|exists:group_classes,id',
+    //         'date' => 'required|date',
+    //         'time_start' => 'required',
+    //         'time_end' => 'required',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
+    //     $schedule = AttendanceSchedule::findOrFail($id);
+    //     $schedule->course_id = $request->course_id;
+    //     $schedule->groupClass_id = $request->groupClass_id;
+    //     $schedule->date = $request->date;
+    //     $schedule->time_start = $request->time_start;
+    //     $schedule->time_end = $request->time_end;
+
+    //     $schedule->save();
+
+    //     return redirect()->route('attendance-schedules.index')->with('success', 'Jadwal presensi berhasil diperbarui.');
+    // }
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
@@ -91,19 +157,31 @@ class AttendanceScheduleController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'Data gagal diperbarui. Silakan periksa input Anda.');
         }
-        $schedule = AttendanceSchedule::findOrFail($id);
-        $schedule->course_id = $request->course_id;
-        $schedule->groupClass_id = $request->groupClass_id;
-        $schedule->date = $request->date;
-        $schedule->time_start = $request->time_start;
-        $schedule->time_end = $request->time_end;
 
-        $schedule->save();
+        try {
+            $schedule = AttendanceSchedule::findOrFail($id);
+            $schedule->course_id = $request->course_id;
+            $schedule->groupClass_id = $request->groupClass_id;
+            $schedule->date = $request->date;
+            $schedule->time_start = $request->time_start;
+            $schedule->time_end = $request->time_end;
 
-        return redirect()->route('attendance-schedules.index')->with('success', 'Jadwal presensi berhasil diperbarui.');
+            $schedule->save();
+
+            return redirect()->route('attendance-schedules.index')
+                ->with('success', 'Jadwal presensi berhasil diperbarui.');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan saat memperbarui data: ' . $e->getMessage());
+        }
     }
+
     public function destroy($id)
     {
         $schedule = AttendanceSchedule::find($id);

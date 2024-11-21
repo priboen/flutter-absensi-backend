@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\GroupClass;
 use App\Models\GroupClasses;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class GroupClassController extends Controller
 {
@@ -23,16 +25,22 @@ class GroupClassController extends Controller
     }
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-        ]);
-        GroupClasses::create([
-            'name' => $request->name,
-        ]);
-        activity()
-            ->causedBy(Auth::user())
-            ->log('created group class ' . $request->name);
-        return redirect()->route('groups.index')->with('success', 'Group Class created successfully');
+        try {
+            $request->validate([
+                'name' => 'required',
+            ]);
+
+            GroupClasses::create([
+                'name' => $request->name,
+            ]);
+
+            activity()->causedBy(Auth::user())->log('Created new group class: ' . $request->name);
+            return redirect()->route('groups.index')->with('success', 'Group Class created successfully');
+        } catch (ValidationException $e) {
+            return redirect()->back()->withErrors($e->errors())->withInput();
+        } catch (Exception $e) {
+            return redirect()->route('groups.index')->with('error', 'Failed to create group class. Please try again.' . $e->getMessage());
+        }
     }
     public function destroy(GroupClasses $group)
     {
