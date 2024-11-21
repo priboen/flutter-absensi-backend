@@ -82,7 +82,7 @@ class CourseController extends Controller
                 ->log('Updated course details: ' . $course->name);
 
             return redirect()->route('courses.index')->with('success', 'Course updated successfully');
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return redirect()->back()->withErrors($e->errors())->withInput();
         } catch (\Exception $e) {
             return redirect()->route('courses.index')->with('error', 'Failed to update course. Please try again.' . $e->getMessage());
