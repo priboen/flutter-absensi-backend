@@ -34,7 +34,7 @@ class PermissionController extends Controller
         try {
             $permission = Permission::find($id);
             $permission->update([
-                'status' => $request->status,
+                'is_approved' => $request->is_approved,
             ]);
             activity()->causedBy(Auth::user())->log('Mengubah status perizinan ' . $permission->class->user->name);
             return redirect()->route('permissions.index')->with('success', 'Status perizinan berhasil diubah');
