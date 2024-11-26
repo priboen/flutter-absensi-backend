@@ -75,15 +75,13 @@
     <ul class="navbar-nav navbar-right">
         <li class="dropdown"><a href="#" data-toggle="dropdown"
                 class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-                <img alt="image"
-                    src="{{ auth()->user()->image_url ? asset('images/user/' . auth()->user()->image_url) : asset('img/avatar/avatar-1.png') }}"
-                    class="rounded-circle mr-1">
+                <img alt="image" src="{{ auth()->user()->image_url }}" class="rounded-circle mr-1">
                 <img src="{{ asset('images') }}" alt="" srcset="">
 
                 <div class="d-sm-none d-lg-inline-block">Hi, {{ auth()->user()->name }}</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <div class="dropdown-title">Logged in 5 min ago</div>
+                <div class="dropdown-title"> Logged in {{ auth()->user()->last_login_at ?? 'recently' }}</div>
                 <a href="{{ route('users.show', Auth::user()->id) }}" class="dropdown-item has-icon">
                     <i class="far fa-user"></i> Profile
                 </a>
