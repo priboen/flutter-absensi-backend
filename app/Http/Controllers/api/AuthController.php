@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    //login
     public function login(Request $request)
     {
         $loginData = $request->validate([
@@ -19,12 +18,10 @@ class AuthController extends Controller
 
         $user = User::where('email', $loginData['email'])->first();
 
-        //check user exist
         if (!$user) {
             return response(['message' => 'Invalid credentials'], 401);
         }
 
-        //check password
         if (!Hash::check($loginData['password'], $user->password)) {
             return response(['message' => 'Invalid credentials'], 401);
         }
@@ -44,21 +41,14 @@ class AuthController extends Controller
         return response(['message' => 'Logged out'], 200);
     }
 
-    //update image profile & face_embedding
     public function updateProfile(Request $request)
     {
         $request->validate([
-            // 'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
             'face_embedding' => 'required',
         ]);
 
         $user = $request->user();
-        // $image = $request->file('image');
         $face_embedding = $request->face_embedding;
-
-        //save image
-        // $image->storeAs('public/images', $image->hashName());
-        // $user->image_url = $image->hashName();
         $user->face_embedding = $face_embedding;
         $user->save();
         activity()->causedBy($user)->log('Mendaftarkan face embbeding');
@@ -69,7 +59,6 @@ class AuthController extends Controller
         ], 200);
     }
 
-    //update fcm token
     public function updateFcmToken(Request $request)
     {
         $request->validate([
