@@ -37,6 +37,7 @@ class ClassesController extends Controller
                     'time_out' => $timeOut->format('H:i'),
                     'latitude' => $course->course->classroom->latitude,
                     'longitude' => $course->course->classroom->longitude,
+                    'radius' => $course->course->classroom->radius,
                 ];
             });
             return response()->json([

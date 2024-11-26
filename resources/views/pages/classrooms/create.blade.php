@@ -84,6 +84,20 @@
                                     </div>
                                 @enderror
                             </div>
+                            <div class="form-group">
+                                <label>Jarak Absensi</label>
+                                <input type="number"
+                                    class="form-control @error('radius')
+                                is-invalid
+                            @enderror"
+                                    name="radius">
+                                @error('radius')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                                <p>*dalam satuan meter</p>
+                            </div>
                         </div>
                         <div class="card-footer text-right">
                             <button class="btn btn-primary">Submit</button>

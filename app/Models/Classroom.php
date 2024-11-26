@@ -10,7 +10,8 @@ class Classroom extends Model
         'name',
         'building_name',
         'latitude',
-        'longitude'
+        'longitude',
+        'radius',
     ];
 
     public function courses()

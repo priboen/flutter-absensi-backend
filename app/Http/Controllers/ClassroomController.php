@@ -32,6 +32,7 @@ class ClassroomController extends Controller
                 'building_name' => $request->building_name,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
+                'radius' => $request->radius,
             ]);
 
             activity()->causedBy(Auth::user())->log('Created new classroom: ' . $request->name);
@@ -59,6 +60,7 @@ class ClassroomController extends Controller
                 'building_name' => $request->building_name,
                 'latitude' => $request->latitude,
                 'longitude' => $request->longitude,
+                'radius' => $request->radius,
             ]);
 
             return redirect()->route('classrooms.index')->with('success', 'Classroom updated successfully');
