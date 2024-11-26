@@ -40,6 +40,13 @@ class User extends Authenticatable
         return $this->hasMany(Note::class);
     }
 
+    public function getImageUrlAttribute($value)
+    {
+        return $value
+            ? asset('storage/user_images/' . $value) // Ubah di sini
+            : asset('img/avatar/avatar-1.png');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
