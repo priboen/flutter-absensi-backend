@@ -33,7 +33,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- END GA -->
 </head>
-</head>
 
 <body>
     <div id="app">
