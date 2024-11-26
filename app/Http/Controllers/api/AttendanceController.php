@@ -23,10 +23,12 @@ class AttendanceController extends Controller
                 'longitude' => 'required',
             ]);
             $class = Classes::findOrFail($validatedData['class_id']);
-            $schedule = AttendanceSchedule::where('groupClass_id', $class->groupClass_id)
-                ->where('date', now()->toDateString())
-                ->where('is_open', true)
-                ->first();
+            $schedule = AttendanceSchedule::where([
+                'course_id' => $class->course_id,
+                'groupClass_id' => $class->groupClass_id,
+                'date' => now()->toDateString(),
+                'is_open' => true,
+            ])->first();
             if (!$schedule) {
                 return response(['message' => 'Tidak ada jadwal presensi yang dibuka.'], 403);
             }
@@ -67,6 +69,9 @@ class AttendanceController extends Controller
                 ->first();
             if (!$attendance) {
                 return response()->json(['message' => 'Kamu belum melakukan presensi datang!'], 400);
+            }
+            if ($attendance->time_out) {
+                return response()->json(['message' => 'Kamu sudah melakukan presensi pulang!'], 400);
             }
             $attendance->update([
                 'time_out' => now()->toTimeString(),
