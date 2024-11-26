@@ -27,7 +27,7 @@ class ClassesController extends Controller
             });
         }
 
-        $classes = $query->orderBy('id', 'asc')->paginate(10);
+        $classes = $query->paginate(10);
         activity()->causedBy(Auth::user())->log('Menampilkan halaman rencana studi');
         return view('pages.classes.index', compact('classes'));
     }
