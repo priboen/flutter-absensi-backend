@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Permission;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Kreait\Firebase\Messaging\Notification;
+use Kreait\Firebase\Messaging\CloudMessage;
 
 class PermissionController extends Controller
 {
@@ -36,10 +39,26 @@ class PermissionController extends Controller
             $permission->update([
                 'is_approved' => $request->is_approved,
             ]);
+            $str = $request->is_approved == 1 ? 'di setujui' : 'di tolak';
+            $this->sendNotificationToUser($permission->class->user->id, 'Izin mata kuliah ' . $permission->class->course->name . ' ' . $str);
             activity()->causedBy(Auth::user())->log('Mengubah status perizinan ' . $permission->class->user->name);
             return redirect()->route('permissions.index')->with('success', 'Status perizinan berhasil diubah');
         } catch (Exception $e) {
             return redirect()->route('permissions.index')->with('error', 'Gagal mengubah status perizinan. Silakan coba lagi.' . $e->getMessage());
         }
+    }
+    public function sendNotificationToUser($userId, $message)
+    {
+        $user = User::find($userId);
+        $token = $user->fcm_token;
+
+        $messaging = app('firebase.messaging');
+        $notification = Notification::create('Status Izin', $message);
+
+        $message = CloudMessage::fromArray([
+            'token' => $token,
+            'notification' => $notification,
+        ]);
+        $messaging->send($message);
     }
 }
