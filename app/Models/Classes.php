@@ -11,14 +11,10 @@ class Classes extends Model
         'user_id',
         'groupClass_id',
     ];
-
-    // Relasi One-to-One dengan User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    // Relasi One-to-One dengan Course
     public function course()
     {
         return $this->belongsTo(Course::class);
@@ -27,17 +23,14 @@ class Classes extends Model
     {
         return $this->hasMany(Attendance::class);
     }
-
     public function permission()
     {
         return $this->belongsTo(Permission::class);
     }
-
     public function classroom()
     {
         return $this->belongsTo(Classroom::class);
     }
-
     public function groupClass()
     {
         return $this->belongsTo(GroupClasses::class, 'groupClass_id');
