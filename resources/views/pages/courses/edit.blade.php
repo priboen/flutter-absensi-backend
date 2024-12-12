@@ -62,7 +62,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-md-6 col-12">
+                                {{-- <div class="form-group col-md-6 col-12">
                                     <label>Waktu Mulai</label>
                                     <input type="text"
                                         class="form-control timepicker @error('time_in')
@@ -74,7 +74,7 @@
                                             {{ $message }}
                                         </div>
                                     @enderror
-                                </div>
+                                </div> --}}
                                 <div class="form-group col-md-6 col-12">
                                     <label>Kredit Semester</label>
                                     <input type="text"
