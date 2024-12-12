@@ -54,7 +54,7 @@
                                         <tr>
                                             <th>Kode Mata Kuliah</th>
                                             <th>Nama Mata Kuliah</th>
-                                            <th>Jam Mulai</th>
+                                            {{-- <th>Jam Mulai</th> --}}
                                             <th>Kredit Semester</th>
                                             <th>Ruang Kelas</th>
                                             <th>Action</th>
@@ -63,7 +63,7 @@
                                             <tr>
                                                 <td>{{ $mk->courses_code }}</td>
                                                 <td>{{ $mk->name }}</td>
-                                                <td>{{ date('H:i', strtotime($mk->time_in)) }}</td>
+                                                {{-- <td>{{ date('H:i', strtotime($mk->time_in)) }}</td> --}}
                                                 <td>{{ $mk->credits }}</td>
                                                 <td>{{ $mk->classroom->name }} - {{ $mk->classroom->building_name }}</td>
                                                 <td>
