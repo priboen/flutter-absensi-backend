@@ -10,7 +10,7 @@ class Course extends Model
         'classroom_id',
         'courses_code',
         'name',
-        'time_in',
+        // 'time_in',
         'credits',
     ];
 
@@ -26,6 +26,11 @@ class Course extends Model
 
     public function courseattendances()
     {
-        return $this->hasMany(CourseAttendance::class);
+        return $this->hasMany(AttendanceSchedule::class);
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
     }
 }
