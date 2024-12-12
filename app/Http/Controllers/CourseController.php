@@ -37,7 +37,7 @@ class CourseController extends Controller
                 'courses_code' => $request->courses_code,
                 'name' => $request->name,
                 'semester' => $request->semester,
-                'time_in' => $request->time_in,
+                // 'time_in' => $request->time_in,
                 'credits' => $request->credits,
             ]);
 
@@ -71,7 +71,7 @@ class CourseController extends Controller
                 'courses_code' => $request->courses_code,
                 'name' => $request->name,
                 'semester' => $request->semester,
-                'time_in' => $request->time_in,
+                // 'time_in' => $request->time_in,
                 'credits' => $request->credits,
             ]);
 
