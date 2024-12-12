@@ -4,6 +4,8 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Classes;
+use App\Models\Schedule;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,25 +21,28 @@ class ClassesController extends Controller
                     'message' => 'Unauthorized'
                 ], 401);
             }
-            $courses = Classes::with(['course.classroom'])
-                ->where('user_id', $user->id)
+            $classes = Classes::with([
+                'course.classroom',
+                'course.schedules',
+                'groupClass'
+            ])->where('user_id', $user->id)
                 ->get();
-            $dataMK = $courses->map(function ($course) {
-                $timeIn = \Carbon\Carbon::parse($course->course->time_in);
-                $totalMinutes = $course->course->credits * 50;
-                $timeOut = $timeIn->copy()->addMinutes($totalMinutes);
+            $dataMK = $classes->map(function ($class) {
+                $schedule = Schedule::where('course_id', $class->course_id)
+                    ->where('groupClass_id', $class->groupClass->id)->first();
                 return [
-                    'id' => $course->id,
-                    'course' => $course->course->name,
-                    'course_code' => $course->course->courses_code,
-                    'credits' => $course->course->credits,
-                    'classroom' => $course->course->classroom->name,
-                    'building_name' => $course->course->classroom->building_name,
-                    'time_in' => $timeIn->format('H:i'),
-                    'time_out' => $timeOut->format('H:i'),
-                    'latitude' => $course->course->classroom->latitude,
-                    'longitude' => $course->course->classroom->longitude,
-                    'radius' => $course->course->classroom->radius,
+                    'id' => $class->id,
+                    'course' => $class->course->name,
+                    'course_code' => $class->course->courses_code,
+                    'groupClass' => $class->groupClass->name,
+                    'credits' => $class->course->credits,
+                    'classroom' => $class->course->classroom->name,
+                    'building_name' => $class->course->classroom->building_name,
+                    'latitude' => $class->course->classroom->latitude,
+                    'longitude' => $class->course->classroom->longitude,
+                    'radius' => $class->course->classroom->radius,
+                    'time_in' => $schedule ? Carbon::parse($schedule->time_in)->format('H:i') : null,
+                    'time_out' => $schedule ? Carbon::parse($schedule->time_out)->format('H:i') : null,
                 ];
             });
             return response()->json([
