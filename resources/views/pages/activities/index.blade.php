@@ -51,8 +51,3 @@
         </section>
     </div>
 @endsection
-
-@push('scripts')
-    <!-- JS Libraries -->
-    <script src="..."></script> <!-- Sesuaikan dengan script JS jika diperlukan -->
-@endpush
