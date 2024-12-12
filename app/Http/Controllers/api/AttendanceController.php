@@ -103,4 +103,82 @@ class AttendanceController extends Controller
             return response()->json(['message' => 'Terjadi kesalahan server', 'error' => $e->getMessage()], 500);
         }
     }
+    // public function index(Request $request)
+    // {
+    //     try {
+    //         $date = $request->input('date');
+    //         $currentUser = $request->user(); // Mendapatkan user yang sedang login
+
+    //         // Query untuk mendapatkan attendance berdasarkan user_id
+    //         $query = Attendance::whereHas('class', function ($q) use ($currentUser) {
+    //             $q->where('user_id', $currentUser->id); // Filter berdasarkan user_id
+    //         });
+
+    //         // Filter berdasarkan tanggal jika diberikan
+    //         if ($date) {
+    //             $query->where('date', $date);
+    //         }
+
+    //         // Mendapatkan hasil
+    //         $attendance = $query->get();
+
+    //         return response([
+    //             'message' => 'Success',
+    //             'data' => $attendance
+    //         ], 200);
+    //     } catch (Exception $e) {
+    //         return response()->json([
+    //             'message' => 'Terjadi kesalahan server',
+    //             'error' => $e->getMessage(),
+    //         ], 500);
+    //     }
+    // }
+
+    public function index(Request $request)
+{
+    try {
+        $date = $request->input('date');
+        $currentUser = $request->user(); // Mendapatkan user yang sedang login
+
+        // Query untuk mendapatkan attendance dengan nama mata kuliah
+        $query = Attendance::with(['class.course']) // Eager load relasi
+            ->whereHas('class', function ($q) use ($currentUser) {
+                $q->where('user_id', $currentUser->id); // Filter berdasarkan user_id
+            });
+
+        // Filter berdasarkan tanggal jika diberikan
+        if ($date) {
+            $query->where('date', $date);
+        }
+
+        // Mendapatkan hasil
+        $attendance = $query->get();
+
+        // Format ulang data agar menampilkan nama mata kuliah
+        $attendanceData = $attendance->map(function ($item) {
+            return [
+                'id' => $item->id,
+                'date' => $item->date,
+                'classroom' => $item->class->course->classroom->name ?? null,
+                'group_class' => $item->class->groupClass->name ?? null,
+                'course_name' => $item->class->course->name ?? null, // Nama mata kuliah
+                'time_in' => $item->time_in,
+                'time_out' => $item->time_out,
+                'latlong_in' => $item->latlong_in,
+                'latlong_out' => $item->latlong_out,
+            ];
+        });
+
+        return response([
+            'message' => 'Success',
+            'data' => $attendanceData
+        ], 200);
+    } catch (Exception $e) {
+        return response()->json([
+            'message' => 'Terjadi kesalahan server',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
 }
