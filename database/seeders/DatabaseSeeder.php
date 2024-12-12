@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('12345678'),
             'phone' => '085697752948',
             'unique_number' => "20210140141",
+            'role' => 'admin',
         ]);
     }
 }
