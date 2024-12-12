@@ -19,6 +19,7 @@
                 <a href="#" class="nav-link has-dropdown"><i
                         class="fa-solid fa-book-open-reader"></i><span>Kurikulum</span></a>
                 <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('schedules.index') }}">Jadwal</a></li>
                     <li><a class="nav-link" href="{{ route('classes.index') }}">Rencana Studi Mahasiswa</a></li>
                     <li><a class="nav-link" href="{{ route('courses.index') }}">Mata Kuliah</a></li>
                     <li><a class="nav-link" href="{{ route('classrooms.index') }}">Ruang Kelas</a></li>
